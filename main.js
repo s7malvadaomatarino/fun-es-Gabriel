@@ -2,7 +2,7 @@ const caixaPrincipal = document.querySelector(".caixa-principal");
 const caixaPerguntas = document.querySelector(".caixa-perguntas");
 const caixaAlternativas = document.querySelector(".caixa-alternativas");
 const caixaResultado = document.querySelector(".caixa-resultado");
-const textoResultado = document.querySelector(".Texto-resultado");
+const textoResultado = document.querySelector(".texto-resultado");
 
 const perguntas = [
     {
@@ -15,7 +15,7 @@ const perguntas = [
             {
                 texto: "Sofisticado ",
                 afirmacao: " Tendencia de moda, algumas pessoas são influenciadas por tendencias atuais e querer experimentar estilos que estão em alta.",
-            } 
+            }
         ]
     },
     {
@@ -74,31 +74,41 @@ const perguntas = [
 
 let atual = 0;
 let perguntaAtual;
-let historiafinal="";
+let historiafinal = "";
 
-function mostraPergunta(){
-    perguntaAtual = perguntas[atual]
-    caixaPerguntas. textContent = perguntaAtual.enunciado;
+function mostraPergunta() {
+    if (atual >= perguntas.length) {
+        mostraResultado();
+        return;
+    }
+
+    perguntaAtual = perguntas[atual];
+    caixaPerguntas.textContent = perguntaAtual.enunciado;
     caixaAlternativas.textContent = "";
     mostraAlternativas();
 
 }
-function mostraAlternativas(){
-    for(const alternativas of perguntaAtual.alternativas){
-        const botaoAlternativas = document.createElement("button")
-        botaoAlternativas.textContent = alternativas.texto;
+function mostraAlternativas() {
+    for (const alternativa of perguntaAtual.alternativas) {
+        const botaoAlternativas = document.createElement("button");
+        botaoAlternativas.textContent = alternativa.texto;
         caixaAlternativas.appendChild(botaoAlternativas);
-        botaoAlternativas.addEventListener("click",()=>repostaselecionada(alternativas));
+        botaoAlternativas.addEventListener("click", () => repostaselecionada(alternativa));
         caixaAlternativas.appendChild(botaoAlternativas);
-
-
     }
 }
 
-function repostaselecionada(opcaoselecionada){
+function repostaselecionada(opcaoselecionada) {
     const afirmacoes = opcaoselecionada.afirmacao;
-    historiafinal = afirmacoes;
+    historiafinal += afirmacoes + " ";
     atual++;
     mostraPergunta();
 }
+
+function mostraResultado() {
+    caixaPerguntas.textContent = " Em 2024... ";
+    textoResultado.textContent = historiafinal;
+    caixaAlternativas.textContent = "";
+}
+
 mostraPergunta();
